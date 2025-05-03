@@ -1,0 +1,111 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{% if chambre %}Modifier{% else %}Créer{% endif %} une chambre - Gestion Résidence{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="px-4 py-5 sm:px-6">
+            <h1 class="text-2xl font-bold text-gray-900">
+                {% if chambre %}Modifier la chambre {{ chambre.numero }}{% else %}Créer une nouvelle chambre{% endif %}
+            </h1>
+        </div>
+        <div class="border-t border-gray-200">
+            <form method="POST" enctype="multipart/form-data" class="space-y-6 p-6">
+                <!-- Numéro de chambre -->
+                <div>
+                    <label for="numero" class="block text-sm font-medium text-gray-700">
+                        Numéro de chambre
+                    </label>
+                    <div class="mt-1">
+                        <input type="text" name="numero" id="numero" required
+                               value="{{ chambre.numero if chambre else '' }}"
+                               class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                </div>
+
+                <!-- Type de chambre -->
+                <div>
+                    <label for="type_chambre" class="block text-sm font-medium text-gray-700">
+                        Type de chambre
+                    </label>
+                    <div class="mt-1">
+                        <select id="type_chambre" name="type_chambre" required
+                                class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            <option value="Simple" {% if chambre and chambre.type_chambre == 'Simple' %}selected{% endif %}>Simple</option>
+                            <option value="Double" {% if chambre and chambre.type_chambre == 'Double' %}selected{% endif %}>Double</option>
+                            <option value="Suite" {% if chambre and chambre.type_chambre == 'Suite' %}selected{% endif %}>Suite</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Prix -->
+                <div>
+                    <label for="prix" class="block text-sm font-medium text-gray-700">
+                        Prix par nuit (€)
+                    </label>
+                    <div class="mt-1">
+                        <input type="number" name="prix" id="prix" required step="0.01"
+                               value="{{ "%.2f"|format(chambre.prix) if chambre else '' }}"
+                               class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700">
+                        Description
+                    </label>
+                    <div class="mt-1">
+                        <textarea id="description" name="description" rows="4"
+                                  class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md">{{ chambre.description if chambre else '' }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Disponibilité -->
+                <div class="flex items-center">
+                    <input type="checkbox" name="disponible" id="disponible"
+                           {% if not chambre or chambre.disponible %}checked{% endif %}
+                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="disponible" class="ml-2 block text-sm text-gray-900">
+                        Chambre disponible
+                    </label>
+                </div>
+
+                <!-- Image -->
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-700">
+                        Image de la chambre
+                    </label>
+                    {% if chambre and chambre.image %}
+                    <div class="mt-2">
+                        <img src="{{ url_for('static', filename='uploads/' + chambre.image) }}" 
+                             alt="Image actuelle" 
+                             class="h-32 w-auto object-cover rounded-lg">
+                    </div>
+                    {% endif %}
+                    <div class="mt-1">
+                        <input type="file" name="image" id="image" accept="image/*"
+                               class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300">
+                        <p class="mt-1 text-sm text-gray-500">
+                            PNG, JPG, GIF jusqu'à 5MB
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="flex justify-end space-x-3 pt-5">
+                    <a href="{{ url_for('chambres') }}"
+                       class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Annuler
+                    </a>
+                    <button type="submit"
+                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        {% if chambre %}Mettre à jour{% else %}Créer{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

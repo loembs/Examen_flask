@@ -1,0 +1,76 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Nouvelle Réservation{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="px-4 py-5 sm:px-6">
+            <h2 class="text-2xl font-playfair font-bold text-gray-900">Nouvelle Réservation</h2>
+        </div>
+        <div class="border-t border-gray-200">
+            <div class="px-4 py-5 sm:p-6">
+                <form method="POST" action="{{ url_for('reservation_create') }}" class="space-y-6">
+                    <div>
+                        <label for="chambre_id" class="block text-sm font-medium text-gray-700">Chambre</label>
+                        <select id="chambre_id" name="chambre_id" required
+                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                            <option value="">Sélectionnez une chambre</option>
+                            {% for chambre in chambres %}
+                                <option value="{{ chambre.id }}">
+                                    {{ chambre.type_chambre }} - Chambre {{ chambre.numero }} ({{ chambre.prix }}€/nuit)
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div>
+                            <label for="date_debut" class="block text-sm font-medium text-gray-700">Date d'arrivée</label>
+                            <input type="date" id="date_debut" name="date_debut" required
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+
+                        <div>
+                            <label for="date_fin" class="block text-sm font-medium text-gray-700">Date de départ</label>
+                            <input type="date" id="date_fin" name="date_fin" required
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3">
+                        <a href="{{ url_for('chambres') }}" 
+                           class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Annuler
+                        </a>
+                        <button type="submit"
+                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Réserver
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Validation des dates
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateDebut = document.getElementById('date_debut');
+        const dateFin = document.getElementById('date_fin');
+        
+        // Définir la date minimale à aujourd'hui
+        const today = new Date().toISOString().split('T')[0];
+        dateDebut.min = today;
+        
+        // Mettre à jour la date minimale de fin quand la date de début change
+        dateDebut.addEventListener('change', function() {
+            dateFin.min = this.value;
+            if (dateFin.value && dateFin.value < this.value) {
+                dateFin.value = this.value;
+            }
+        });
+    });
+</script>
+{% endblock %} 

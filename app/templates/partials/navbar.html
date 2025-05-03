@@ -1,0 +1,48 @@
+<nav class="bg-primary-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <a href="{{ url_for('index') }}" class="text-white text-xl font-bold">Gestion Résidence</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}nav-link-active{% endif %}">
+                            Accueil
+                        </a>
+                        <a href="{{ url_for('chambres') }}" class="nav-link {% if request.endpoint == 'chambres' %}nav-link-active{% endif %}">
+                            Chambres
+                        </a>
+                        <a href="{{ url_for('contact') }}" class="nav-link {% if request.endpoint == 'contact' %}nav-link-active{% endif %}">
+                            Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden md:block">
+                <div class="ml-4 flex items-center md:ml-6">
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.role == 'admin' %}
+                            <a href="{{ url_for('admin_contacts') }}" class="nav-link">
+                                Admin
+                            </a>
+                        {% endif %}
+                        <a href="{{ url_for('reservations') }}" class="nav-link">
+                            Mes Réservations
+                        </a>
+                        <a href="{{ url_for('logout') }}" class="nav-link">
+                            Déconnexion
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="nav-link">
+                            Connexion
+                        </a>
+                        <a href="{{ url_for('register') }}" class="nav-link">
+                            Inscription
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</nav> 
