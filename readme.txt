@@ -48,11 +48,29 @@ Vous pouvez vous connecter en tant qu’un des utilisateurs suivants :
     - Email : patrick.natsi@example.com
     - Mot de passe : Patrick2025!
 
+4.🍏 Pour macOS 
+Dans un terminal, utilisez simplement :
+
+bash
+Copier
+Modifier
+source venv/bin/activate
+Si vous recevez une erreur "Permission denied", donnez les droits d'exécution :
+
+bash
+Copier
+Modifier
+chmod +x venv/bin/activate
+
 Réaliser une réservation
 ------------------------
 Une fois connecté, un nouveau menu s’affiche. Cliquez sur "Réservation" pour accéder au formulaire de réservation de chambre.
 
 Suivez les étapes proposées pour finaliser la réservation.
+#si vous rencontrer cette erreur : 
+
+
+
 
 Remerciements
 -------------
